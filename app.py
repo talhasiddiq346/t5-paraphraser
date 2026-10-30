@@ -30,9 +30,9 @@ def load_model():
 @st.cache_data
 def paraphrase(text):
     tokenizer, model = load_model()
-    inputs = tokenizer("Paraphrase this sentence: " + text, return_tensors="pt", truncation=True, max_length=128)
+    inputs = tokenizer("Rewrite this sentence in different words: " + text, return_tensors="pt", truncation=True, max_length=128)
     with torch.no_grad():
-        output = model.generate(**inputs, num_beams=5, max_length=128)
+        output = model.generate(**inputs, do_sample=True, top_p=0.95, temperature=1.3, max_length=128)
     return tokenizer.decode(output[0], skip_special_tokens=True)
 
 with st.spinner("Loading model, please wait..."):
